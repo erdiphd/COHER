@@ -3,12 +3,23 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <script type="text/javascript" async="" src="./analytics.js"></script>
-  <script type="text/javascript" id="www-widgetapi-script" src="./www-widgetapi.js" async=""></script>
-  <script src="./jsapi" type="text/javascript"></script>
-  <script src="/js/mathjax-config.js"></script>
+  <script type="text/javascript" async="" src="web//analytics.js"></script>
+  <script type="text/javascript" id="www-widgetapi-script" src="web/www-widgetapi.js" async=""></script>
+  <script src="web/jsapi" type="text/javascript"></script>
+  <script src="web/mathjax-config.js"></script>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai.min.css"
+    crossorigin="anonymous" title="hl-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai.min.css"
+    crossorigin="anonymous" title="hl-dark" disabled>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/shell.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+  <script>hljs.initHighlightingOnLoad();</script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/latex.min.js"></script>
 
@@ -153,8 +164,8 @@
     }
   </style>
 
-  <script type="text/javascript" src="./hidebib.js"></script>
-  <link href="./css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="web/hidebib.js"></script>
+  <link href="web/css" rel="stylesheet" type="text/css" />
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <link rel="icon" type="image/png" href="https://erdiphd.github.io" />
@@ -171,7 +182,7 @@
     content="Li, Jabri, Darrell, Agrawal. Force-Based Hindsight Experience Prioritization. 2019." />
   <meta property="og:url" content="https://richardrl.github.io/relational-rl/" />
   <meta property="og:image" content="https://pathak22.github.io/modular-assemblies/resources/generalization.png" />
-  <meta property="og:video" content="https://www.youtube.com/embed/rW1HTX0VA10" />
+  <meta property="og:video" content="https://www.youtube.com/embed/nVuoxhVqBVw" />
 
   <meta property="article:publisher" content="https://github.com/richardrl/richardrl.github.io/" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -188,15 +199,15 @@
   <meta property="og:image:width" content="1600" />
   <meta property="og:image:height" content="900" />
 
-  <script src="./iframe_api"></script>
+  <script src="web/iframe_api"></script>
   <meta name="twitter:card" content="player" />
   <meta name="twitter:image" content="https://richardrl.github.io/relational-rl/resources/teaser.jpg" />
-  <meta name="twitter:player" content="https://www.youtube.com/embed/rW1HTX0VA10" />
+  <meta name="twitter:player" content="https://www.youtube.com/embed/nVuoxhVqBVw" />
   <meta name="twitter:player:width" content="640" />
   <meta name="twitter:player:height" content="360" />
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async="" src="./js"></script>
+  <script async="" src="web/js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
@@ -232,10 +243,12 @@ function seek(sec){
  -->
 </head>
 
+
 <body>
   <br />
   <center>
-    <span style="font-size: 44px; font-weight: bold">Coevolutionary curriculum learning for tasks with sparse reward</span>
+    <span style="font-size: 44px; font-weight: bold">Coevolutionary curriculum learning for tasks with sparse
+      reward</span>
   </center>
   <br />
   <table align="center" width="600px">
@@ -249,7 +262,7 @@ function seek(sec){
         <td align="center" width="150px">
           <center>
             <span style="font-size: 22px"><a href="https://sites.google.com/site/giovanniiacca/" target="_blank">
-              Giovanni Iacca</a></span>
+                Giovanni Iacca</a></span>
           </center>
         </td>
         <td align="center" width="150px">
@@ -313,7 +326,7 @@ function seek(sec){
     <tbody>
       <tr>
         <td align="center" width="300px">
-          <iframe width="768" height="512" src="./video.html" frameborder="0" allowfullscreen=""></iframe>
+          <iframe width="768" height="512" src="web/video.html" frameborder="0" allowfullscreen=""></iframe>
         </td>
       </tr>
     </tbody>
@@ -326,340 +339,314 @@ function seek(sec){
     <ul style="margin-top: 0px">
       <li> <b> Abstract </b> </li>
       <li> <b>Methodology </b></li>
-      <ul style="margin-top: 0px">
-        <li>Force-Based Replay Buffer</li>
-        <li>Work-Based Replay Buffer</li>
-      </ul>
       <li><b> Experiment </b> </li>
     </ul>
     <center>
       <h3>Abstract</h3>
     </center>
-    Multi-goal robot manipulation tasks with sparse rewards are difficult for reinforcement learning (RL) algorithms due
-    to the inefficiency in collecting successful experiences. Recent algorithms such as Hindsight Experience Replay
-    (HER) expedites learning by taking advantage of failed trajectories and replaces the desired goal with one of the
-    achieve points so that any failed trajectory can be utilized as a contribution to learning. But in HER, failed
-    trajectories are chosen uniformly, without taking into account which ones might be the most valuable for learning.
-    In this paper, we address the sample inefficiency of HER and propose methods for prioritizing the replay buffers
-    such as force-based and work-based replay buffers, using force sensors in the gripper of the robot. Contact rich
-    experiences are sampled with higher probability from the replay buffer, which are mostly result from interaction
-    between manipulator and object. We showed that our methods surpass state-of-the-art methods on robot manipulation
-    tasks.
+    Multi-goal reinforcement learning (RL) problems with sparse rewards are challenging task. Hindsight experience
+    replay (HER) learns from failures by replacing the achieved state of failed experiences with desired goal. If
+    desired goals are far away from the initial states, HER cannot explore efficiently.
+
+    To deal with that efficiency problem, curriculum-based RL approaches decompose complex tasks into sequences of
+    gradually more difficult tasks by relying on some heuristics and guide the agent to explore the environment more
+    efficiently. What if an algorithm generates its own curricula in an open-ended way rather than relying on heuristic
+    methods? The term <i>open-ended</i> means to create novel and increasingly complex tasks without bound. In this
+    paper, we propose an extension of HER called co-evolutionary hindsight experience replay (COHER) inspired by Paired
+    Open-Ended Trailblazer (POET). The generated task and agent are coupled to optimize the behavior of the agent within
+    the task-agent pair. After reaching a predefined success rate, the next challenging task is generated and the agent
+    leverages the skills acquired from the prior task to solve the more challenging task. COHER has been evaluated on
+    various sparse reward benchmark tasks and compared with a curriculum RL "Hindsight Goal Generation" (HGG) and
+    vanilla-HER. The results show that COHER consistently outperforms the state-of-the-art methods and can avoid
+    obstacles without giving the algorithm explicit information about their position. Lastly, we deploy policies from
+    the training results to the real Franka robot for Sim2Real. We observe that Franka robot with the final policy of
+    our method can achieve the task by avoiding obstacles, whereas the other policies hit the obstacles.
 
     <center>
       <h3>Methodology</h3>
     </center>
-    When we train the robots to perform manipulation tasks, the sparse reward signal causes insufficient successful
-    experiences. HER leverages failed experiences by replacing desired goal with the achieved goal of the failed
-    experiences. With this modification, any failed experience return nonnegative reward. However, if the initial
-    position of the robot is far from the desired position, hindsight goals generated by HER may not be effective in
-    solving the task because they are sampled randomly from the visited states, which are mostly distributed around the
-    initial state. Consequently, experiences are not regarded based on their importance for learning, which leads to
-    sample inefficiency.
-    Instead, we leverage the force sensor and prioritize the experiences using the metrics in the Eq.
-    ($\ref{eq:p_episode_based_on_force}$) and Eq. ($\ref{eq:p_episode_based_on_work}$) which are proposed as force and
-    work
-    based replay buffer, respectively.
-    <h3>A. Force Based Replay Buffer</h3>
+    In this paper, we are working on robot manipulation tasks in an open-ended process within single run. We pair each
+    environment $\mathcal{X}$ (e.g different number of obstacles) with an agent $\mathcal{Y}$ (e.g neural network) and
+    optimize the behaviour of agents within environment-agent pair until it reaches the predefined success rate. After
+    satisfying the success rate, a bit harder new environment $\mathcal{X'}$ (e.g more obstacles than previous one) is
+    generated. Correspondingly, the algorithm continuously creates a new challenging environment originating from parent
+    environment. These new challenges in the environments are en coded by the number, dimension, and position of the
+    obstacles and the algorithm mutates and increase some of the parameters to create new challenging environment.
+    The agent seeks to solve newly generated environments by utilizing its existing skills, which are acquired from
+    previous environments. In this way, the agent transfers and adapts its existing behavior to the new environment.
+    New generated environment are not added to the current population in POET if they are too hard and too easy for the
+    current population. On the contrary, testing an environment in our case whether or not it is
+    too hard or too easy incurs much cost due to complexity of task we have to ensure that agent attains the predefined
+    success rate in the current environment before solving the next one.
 
-    Force sensors are used on the gripper's left and right sides to measure net applied forces such as coriolis,
-    centripetal, gravitational and contact forces. Gravitational forces are compensated by adding the weight of the
-    gripper (i.e., $m g$). Next, measured multi-dimensional force is turned into a scalar value by adding the absolute
-    value of each dimension. The scalar value is then cumulatively added through time steps for each episode, as written
-    in Eq.
+    Algorithm 1 describes our method briefly. We start with a very simple environment and train it using HER
+    framework. When performance is greater than or equal to the predefined success rate $\delta$, the next challenging
+    environment is created and agent tries to learn the new environment with its current skills.
 
-
-    $$
-    \begin{equation}
-    f(e,t) = \sum_{j=0}^{n} \sum_{i=0}^{t} \lvert {f}_{left}^{\left(j\right)}\left(e,i\right)\rvert +\lvert {f}_{
-    right}^{\left(j\right)}\left(e,i\right)\rvert
-    \label{eq:cumulative_force}
-    \tag{1}
-    \end{equation}
-    $$
-    where $n$ is the dimension of the force sensor, $t$ is timesteps, $f_{left}$ and $f_{right}$ are the forces from the
-    left and right side of the gripper, respectively.
-
-
-    $$
-    \begin{equation}
-    p_{episode}(e) = \frac{\sum_{t=0}^{T}f(e,t)}{\sum_{i_{e}=0}^{e} \sum_{t=0}^{T}f(i_{e},t)}
-    \label{eq:p_episode_based_on_force}
-    \tag{2}
-    \end{equation}
-    $$
-
-    <h3>B. Work Based Replay Buffer</h3>
-
-    A similar approach described in previous section is used for work-based prioritization. To begin, multidimensional
-    force values from the gripper's left and right sides are added together
-    with their absolute value until the current timestep $t$. Then, it is multiplied with the displacement vector.
-
-    The probability distribution of the episodes in the Eq. (\ref{eq:p_episode_based_on_work}) is calculated based on
-    their work-rich information, and a mini-batch $\mathcal{B}$ is sampled from the replay buffer $\mathcal{R}$
-    according to the probability distribution $p_{episode}(e)$.
-
-
-
-    $$
-
-    \begin{equation}
-    w(e,t) = \sum_{j=0}^{n}\left(\sum_{i=0}^{t} \lvert {f}_{left}^{\left(j\right)}\left(e,i\right)\rvert +\lvert {f}_{
-    right}^{\left(j\right)}\left(e,i\right)\rvert \right) \cdot \Delta {x}_i ^{\left(j\right)}
-    \label{eq:cumulaive_work}
-    \tag{3}
-    \end{equation}
-    $$
-    where $\Delta {x}_i^{\left(j\right)}$ is the displacement vector between current $i$ and previous timestep $i-1$ in
-    dimension $j$. $w\left(e,t\right)$ is the cumulative work done until step $t$.
-    $$
-
-    \begin{equation}
-    p_{episode}(e) = \frac{\sum_{t=0}^{T}w(e,t)}{\sum_{i_{e}=0}^{e} \sum_{t=0}^{T}w(i_{e},t)}
-    \label{eq:p_episode_based_on_work}
-    \tag{4}
-    \end{equation}
-    $$
+    <tbody>
+      <tr>
+        <td width="1200px">
+          <center><a href="web/img/algorithm_1.png"><img src="web/img/algorithm_1.png" height="500px"></a><br></center>
+        </td>
+      </tr>
+    </tbody>
 
     <center>
       <h3>Experiment</h3>
     </center>
-    In this section, we will describe the robot simulation benchmark used for testing the proposed approach.
-    <table align="center">
-      <tbody>
-        <tr>
-          <td width="1200px">
-            <center>
-              <a href="./mujoco_benchmarks.png"><img src="./mujoco_benchmarks.png" height="500px" /></a><br />
-            </center>
-          </td>
-        </tr>
-      </tbody>
-    </table>
 
-    We tested the proposed approaches using a 7-DOF robotic arm in the MuJoCo simulation and the robotic arm environment
-    is designed as a standard benchmark for Multi-Goal RL. Three standard manipulation tasks from the benchmark:
-    PickAndPlace, Push, Slide are selected as shown in the figure above. The state is a vector consisting
-    of the position, orientation, linear velocity, and angular velocity of all robot joints and objects. A goal
-    represents the desired position for an object. It is assumed that the task is accomplished if object reaches the
-    goal within the distance set by a threshold. If the object is not in the range of the goal, the agent receives a
-    negative reward $-1$; otherwise, the non-negative reward $0$. We tested the proposed approaches with 7 different
-    seeds against vanilla HER using these three manipulation tasks and results show that adding force information to the
-    state space speeds up the learning effectively.
+    We conduct experiments on the MuJoCo simulation provided by OpenAI Gym and used as a standard benchmark for
+    Multi-goal RL using the 7-DOF Fetch Robotic Manipulator. Two standard manipulation
+    tasks such as push and pickandplace are chosen.
+    The state is a vector consisting of the position, orientation, linear velocity, and angular velocity of all robot
+    joints as well as the position of the cube and target object (except the obstacles). It is assumed that the task is
+    accomplished if object reaches the goal within the distance set by a threshold (Eq.\ref{eq:reward_function}) and
+    receives a non-negative reward $0$.
+    We compare the performance of our framework against vanilla HER and HGG. For all experiments, we used Energy-based
+    replay buffer prioritization. When current environment $\mathcal{X}$ performance reaches
+    predefined success rate $\delta$, a bit harder next environment $\mathcal{X'}$ is generated and agent continue to
+    accomplish the new one with its learned model.
 
-    <table align="center" width="1000px">
-      <tbody>
-        <tr>
-          <td width="1200px">
-            <a href="./algorithm.png"><img src="./algorithm.png" height="400px" /></a><br />
-          </td>
-        </tr>
-      </tbody>
-    </table>
 
-    <h4>Pick & Place Task (FetchPickAndPlace-v1)</h4>
-    The mission is to grasp the black box with a gripper and place it at the target location shown as a red dot. As the
-    robot moves in three dimensions, three-dimensional force values are used; therefore, $n=3$ in
-    Eq.(\ref{eq:cumulative_force}) and Eq.(\ref{eq:cumulaive_work}). Both force-based and work-based replay buffers
-    outperform the uniform replay buffer, which is used in Vanilla HER. The results are shown in the Fig.
-    \ref{fig:result_fetch_pick_and_place}.
+    PickAndPlace(FrankaPickAndPlace-v1):
+    A pick-and-place task with different environments is shown in the Fig.\ref{fig:pickandplace_env_evolution}. The
+    objective is to grasp the object and bring it to the target position. The object is shown as a black box, and its
+    initial position is sampled uniformly from the yellow area. The target is the red dot, which is sampled uniformly
+    from the blue region, and the obstacles are colored in magenta. The task’s difficulty is gradually increased by
+    adding fixed blocks to the different locations on the table, and four different environments are generated in total.
+    In the first task shown in the Fig.\ref{fig:pickandplace_1}, the robot learns how to pick up the object and place it
+    on the red dot. In the second shown in Fig.\ref{fig:pickandplace_2}, a 0.2m-width, 0.02m-depth, and 0.5m-height
+    obstacle is placed on the other side of the robot on the table. In the third shown in Fig.\ref{fig:pickandplace_3},
+    another obstacle with 0.3m width, 0.02m depth, and 0.3m height is placed. In the last shown in
+    Fig.\ref{fig:pickandplace_4}, an obstacle with 0.2m width, 0.02m depth, and 0.9m height is placed in front of the
+    target sampled area.
 
-    <h4>Push Task (FetchPush-v1)</h4>
-    A black box is placed randomly on the table, and the robot's gripper is clamped. The mission is to push the object
-    to the target position. We use $n=3$ in Eq.(\ref{eq:cumulative_force}) and Eq.(\ref{eq:cumulaive_work}).
 
-    <h4>Slide Task(FetchSlide-v1)</h4>
-    A puck is placed on a long slippery table and the target is outside of the robots workspace. The mission is to hit
-    the puck with a specific force so that it slides on the table and stop at the target location. We use $n=2$ in
-    Eq.(\ref{eq:cumulative_force}) and Eq.(\ref{eq:cumulaive_work}) because the gripper of the robot mostly does not
-    interact with the puck in the z direction.
-    <br />
-    The simulation results shed light on the performance of the proposed replay buffers.
-    The force-based and work-based replay buffers are better than the uniform replay buffer because force values tell us
-    more about how the robot and object interact than the uniform replay buffer does. This lets us prioritize useful
-    episodes to learn faster.
-    The work-based replay buffer is slightly better than the force-based replay buffer in pickandplace and push tasks,
-    where the long interactions between robot and object occur compared to the slide environment. The reason of slight
-    improvement of work-based replay buffer is that the it considers the displacement of the end effector and the
-    force-based not. Imagine that the robot interacts with the object in a small region, i.e., far away from the goal,
-    during an episode. In this scenario, the force-based replay buffer might prioritize that episode; however,
-    work-based replay does not give as much priority as force-based replay since the work done by the end effector
-    results in a smaller value due to its smaller displacement.
-    <table align="center" width="1000px">
-      <tbody>
-        <tr>
-          <td width="1200px">
-            <a href="./fetch_simulation_success_result.png"><img src="./fetch_simulation_success_result.png"
-                height="250px" /></a><br />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <center>
-      <h3>Sim2Real</h3>
-    </center>
-    We tested the proposed force-based and work-based replay buffers in real-life scenarios using Franka robot. To
-    begin, we use the Franka robot for three standard manipulation tasks and named them as
-    <i>FrankaPickAndPlace-v1</i>
-    <i>FrankaPush-v1</i>
-    <i>FrankaSlide-v1</i> respectively and <i>FrankaPickAndPlace-v1</i> used for sim2real is shown in the
-    Fig.\ref{fig:franka_robot_setups}.
 
-    The experiment was set up with a camera and ArUco markers.
-    ArUco markers and the red cube object are detected using the Aruco module and a red filter with the Open-CV library,
-    respectively, and the centers of their pixel positions are obtained as shown in the Fig.
-    \ref{fig:sim2real_from_camera_view}. Next, the end-effector is moved freely to find out where the ArUco markers are
-    with respect to the robot reference frame. Then the cv.getPerspectiveTransform method is used to calculate the
-    perspective transform matrix from those four pairs of points. Lastly, the cube's position in relation to the robot's
-    reference frame can be found by multiplying the cube's pixel position by this perspective matrix.
-    The policy that has been trained is directly transferred from simulation to real life and outputs the linear motion
-    in cartesian space relative to its current position as well as the state of the gripper gap. The parameters of
-    linear motion are given to the Franka robot using the Frankx library. Due to a hardware issue on the gripper side of
-    the robot (i.e., if gripper states are fed into the robot in every timestep, it no longer responds to commands and
-    maintains its position), we determined a threshold value to clamp and release the gripper.
+    Pushing(FetchPush-v1):
+    A cube (black box) and target (red dot) are sampled uniformly from the yellow and blue areas, respectively. The
+    objective is to push the cube into the target position with a clamped gripper. The task's difficulty is gradually
+    increased by adding fixed obstacles to the different locations on the table, and four different environments are
+    generated in total, as shown in the Fig.\ref{fig:push_env_evolution}. In the first task Fig.\ref{fig:push_1}, the
+    robot learns how to push the object to the target point. In the second task Fig.\ref{fig:push_2}, the robot needs to
+    adapt its learned policy from the previous task to avoid the obstacle. In the third task Fig.\ref{fig:push_3}, there
+    is only a 10cm gap, and robots should push the object through this gap. Another obstacle is placed in the middle of
+    the table in the fourth task in Fig.\ref{fig:push_4}, which the robot must avoid in order to reach the target
+    position.
+
+    <div class="row_mujoco_robotics">
+      <div class="column_mujoco_robotics">
+        <img src="web/img/fetchpush_env.png" alt="FetchPush_Env0" style="width:100%">
+      </div>
+      <div class="column_mujoco_robotics">
+        <img src="web/img/fetchpush_env1.png" alt="FetchPush_Env1" style="width:100%">
+      </div>
+      <div class="column_mujoco_robotics">
+        <img src="web/img/fetchpush_env2.png" alt="FetchPush_Env2" style="width:100%">
+      </div>
+      <div class="column_mujoco_robotics">
+        <img src="web/img/fetchpush_env3.png" alt="FetchPush_Env3" style="width:100%">
+      </div>
+    </div>
+
+
+    <div class="row_mujoco_robotics">
+      <div class="column_mujoco_robotics">
+        <img src="web/img/fethcpickandplace_env0.png" alt="fethcpickandplace_env0" style="width:100%">
+      </div>
+      <div class="column_mujoco_robotics">
+        <img src="web/img/fethcpickandplace_env1.png" alt="fethcpickandplace_env1" style="width:100%">
+      </div>
+      <div class="column_mujoco_robotics">
+        <img src="web/img/fethcpickandplace_env2.png" alt="fethcpickandplace_env2" style="width:100%">
+      </div>
+      <div class="column_mujoco_robotics">
+        <img src="web/img/fethcpickandplace_env3.png" alt="fethcpickandplace_env3" style="width:100%">
+      </div>
+    </div>
+
+    <div class="row_mujoco_robotics">
+      <div class="column_mujoco_robotics">
+        <img src="web/img/sim2real_obstacle_measurement.png" alt="fethcpickandplace_env0" style="width:100%">
+      </div>
+      <div class="column_mujoco_robotics">
+        <img src="web/img/sim2real_setup.png" alt="fethcpickandplace_env1" style="width:100%">
+      </div>
+
+    </div>
+  </div>
+
+  <div class="franka_robotic_results_container">
+    <div class="franka_robotic_result">
+      <img src="web/img/boxplot_environments_frankapickandplace.svg" alt="fethcpickandplace_env0" style="width:100%">
+    </div>
+    <div class="franka_robotic_result">
+      <img src="web/img/franka_pickandplace_box_plot_compare_coher_and_her.svg" alt="fethcpickandplace_env1" style="width:100%">
+    </div>
+    <div class="franka_robotic_result">
+      <img src="web/img/frankapickandplace_complete.svg" alt="fethcpickandplace_env2" style="width:100%">
+    </div>
 
   </div>
-  <br />
-  <hr />
 
+  <div class="franka_robotic_results_container">
+    <div class="franka_robotic_result">
+      <img src="web/img/fetch_push_box_plot_compare_coher_and_her.svg" alt="fethcpickandplace_env0" style="width:100%">
+    </div>
+    <div class="franka_robotic_result">
+      <img src="web/img/boxplot_environments_fetchpush.svg" alt="fethcpickandplace_env1" style="width:100%">
+    </div>
+    <div class="franka_robotic_result">
+      <img src="web/img/fetchpush_complete.svg" alt="fethcpickandplace_env2" style="width:100%">
+    </div>
 
-  <center>
-    <h1>Zero-shot Generalization</h1>
-  </center>
-  <div style="width:800px; margin:0 auto; text-align=center">
-    We show zero-shot generalization to different block configurations and
-    block cardinalities. Our system can stack blocks into taller towers,
-    multiple towers and pyramids without additional training. While these
-    results are exciting, we acknowledge there is substantial room for
-    improving the zero-shot results.
   </div>
-  <br />
-  <p style="margin-top: 4px"></p>
-  <table align="center" width="1000px">
+
+  
+  <table class="table_robotic_tasks">
+    <thead>
+        <tr>
+            <th>FrankaPickAndPlace</th>
+            <th>COHER</th>
+            <th>HER</th>
+        </tr>
+    </thead>
     <tbody>
-      <tr>
-        <td width="1200px">
-          <center>
-            <a href="./generalization.png"><img src="./generalization.png" height="500px" /></a><br />
-          </center>
-        </td>
+      <tr class="active-row">
+            <td>mean</td>
+            <td>53850</td>
+            <td>53850</td>
+        </tr>
+        <tr class="active-row">
+            <td>median</td>
+            <td>52600</td>
+            <td>52600</td>
+        </tr>
+        <tr class="active-row">
+          <td>standard deviation</td>
+          <td>294900</td>
+          <td>294900</td>
       </tr>
     </tbody>
-  </table>
+</table>
 
-  <br />
-  <hr />
+<table class="table_robotic_tasks">
+  <thead>
+      <tr>
+          <th>FetchPush</th>
+          <th>COHER</th>
+          <th>HER</th>
+      </tr>
+  </thead>
+  <tbody>
+    <tr class="active-row">
+          <td>mean</td>
+          <td>53850</td>
+          <td>53850</td>
+      </tr>
+      <tr class="active-row">
+          <td>median</td>
+          <td>52600</td>
+          <td>52600</td>
+      </tr>
+      <tr class="active-row">
+        <td>standard deviation</td>
+        <td>294900</td>
+        <td>294900</td>
+    </tr>
+  </tbody>
+</table>
 
-  <center>
-    <h1>Emergent Behaviors</h1>
-  </center>
-  <div style="width:940; height:280; margin:0 auto; text-align=center">
-    1.
-    <video width="280" height="280" controls="">
-      <source src="test_video.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-    &nbsp; 2.
-    <video width="280" height="280" controls="">
-      <source src="resources/videos/pushing.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
 
-    3.
-    <video width="280" height="280" controls="">
-      <source src="resources/videos/pick2place2.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-    &nbsp;
   </div>
+  <br />
 
-  <div style="width:800px; margin:0 auto; text-align=center">
-    <ol>
-      <li>
-        <b>Singulation:</b> (0:02) In order to not knock over the tower, the
-        agent singulates the final black block before picking and placing it.
-      </li>
-
-      <li>
-        <b>Pushing while grasping:</b> (0:03) The agent performs a
-        rolling/pushing behavior on the green block while grasping the blue
-        block.
-      </li>
-
-      <li>
-        <b>Pick 2, place 2:</b> (0:03) The agent collects the blue and yellow
-        blocks in hand before placing each one by one.
-      </li>
-    </ol>
+  <h3>How to run benchmarks</h3>
+  <div class="highlight1">
+    <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#fd00dc">#!/bin/bash</span> <br> </br><span style="color:#0167ff">docker-compose run --rm -d -e mujoco_env=FrankaPickAndPlace-v1 -e log_tag=log/train1 -e n_epochs=200 cher</span>
+  </code></pre>
   </div>
 
   <br />
-  <hr />
 
-  <center>
-    <h1>Failure Modes</h1>
-  </center>
-  <div style="width:620; height:580px; margin:0 auto; text-align=center">
-    1.
-    <video width="280" height="280" controls="">
-      <source src="frankapickandplace.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-    &nbsp; 2.
-    <video width="280" height="280" controls="">
-      <source src="frankapush.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
 
-    3.
-    <video width="280" height="280" controls="">
-      <source
-        src="resources/failure_videos/stack6-&gt;stack6/Blocks Fall Off - Before Stacked/openaigym.video.0.2340.video000043.mp4"
-        type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-    &nbsp; 4.
-    <video width="280" height="280" controls="">
-      <source
-        src="resources/failure_videos/stack6-&gt;stack6/Blocks Fall Off - After Stacked/openaigym.video.0.2340.video000064.mp4"
-        type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-  </div>
 
-  <div style="width:800px; margin:0 auto; text-align=center">
-    <ol>
-      <li>
-        <b>Oscillation:</b> The agent oscillates its end-effector without
-        progressing towards the goal. Often, this happens when the target
-        block is very close to the base of the tower. In this scenario,
-        picking up the block risks toppling the tower. We hypothesize that in
-        order to reduce this risk, the agent simply oscillates its
-        end-effector.
-      </li>
-
-      <li>
-        <b>Insufficient recovery time:</b> After 6 blocks have been stacked
-        into a tower, the tower topples. The agent restarts stacking but is
-        unable to stack all the blocks within the maximum time length of the
-        episode.
-      </li>
-
-      <li>
-        <b>Blocks fall off during stacking:</b> While stacking a tower of 6
-        blocks, the agent knocks one or more blocks off the table. Because the
-        blocks are no longer on the table, the agent does not succeed.
-      </li>
-
-      <li>
-        <b>Blocks fall off after stacking:</b>
-        The agent succeeds in stacking a tower of 6 blocks, but the tower
-        topples and block(s) fall off the table.
-      </li>
-    </ol>
-  </div>
   <br />
-  <hr />
+
+  <div class="sim2real_youtube_videos_row">
+
+    <div class="sim2real_youtube_videos_column">
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/tV8BbRbyv3k" title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="sim2real_youtube_videos_column">
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/nVuoxhVqBVw" title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="sim2real_youtube_videos_column">
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/fst53mOdC7A" title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="sim2real_youtube_videos_column">
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/7poD_2C3cj0" title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="sim2real_youtube_videos_column">
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/2r-5qgLOluY" title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="sim2real_youtube_videos_column">
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/jwKgE6RP5mY" title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="sim2real_youtube_videos_column">
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/wEM0MBC7fpc" title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="sim2real_youtube_videos_column">
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/jTN0m1NsJt8" title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+
+  </div>
+
+
+
 
   <center id="sourceCode">
     <h1>Source Code and Environment</h1>
@@ -688,7 +675,7 @@ function seek(sec){
         <td width="250px" align="left">
           <!-- <p style="margin-top:4px;"></p> -->
           <a href="https://arxiv.org/pdf/1912.11032.pdf"><img style="height: 150px"
-              src="./ICRA_PAPER_RICHARD.pdf.jpg" /></a>
+              src="web/ICRA_PAPER_RICHARD.pdf.jpg" /></a>
           <span style="font-size: 20pt"><a href="https://arxiv.org/pdf/1912.11032.pdf">[Paper]</a>&nbsp;
             <span style="font-size: 20pt"><a href="https://arxiv.org/pdf/1912.11032.pdf">[ArXiv]</a>
             </span></span>
@@ -749,6 +736,13 @@ function seek(sec){
       hideallbibs();
     </script>
   </div>
+
+
+
+
+
 </body>
+
+
 
 </html>
