@@ -1,0 +1,37 @@
+hyperparameters:
+  tag: '' 
+  alg: ddpg
+  learn: normal
+  env: FrankaPickAndPlace-v1
+  goal: vanilla
+  init_offset: 1.0
+  init_rotation: 0.25
+  gamma: 0.98
+  clip_return: True
+  eps_act: 0.3
+  std_act: 0.2
+  pi_lr: 1.0E-3
+  q_lr: 1.0E-3
+  act_l2: 1.0
+  polyak: 0.95
+  env_name: frankapick_and_place_env0
+  obs_init_pos: [[1.4,0.75,0.4]]
+  obs_init_size: [[0.01,0.01,0.02]]
+  success_rate_for_env_change: [0.9, 0.9, 0.9, 0.9]
+  env_trains: 3
+  epochs: 20
+  cycles: 20
+  episodes: 50
+  timesteps: 100
+  train_batches: 20
+  buffer_size: 10000
+  buffer_type: energy
+  batch_size: 256
+  warmup: 10000
+  her: future
+  her_ratio: 0.8
+  pool_rule: full
+  hgg_c: 3.0
+  hgg_L: 5.0
+  hgg_pool_size: 1000
+  save_acc: True

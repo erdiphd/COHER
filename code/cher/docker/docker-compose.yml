@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  cher:
+    build: .
+    image: erditmp/cher
+    volumes:
+    - ../../cher:/home/user/cher
+    environment:
+      mujoco_env: ${mujoco_env}
+      log_tag: ${log_tag}
+      n_epochs: ${n_epochs}

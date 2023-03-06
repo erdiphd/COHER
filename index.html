@@ -168,7 +168,7 @@
   <link href="web/css" rel="stylesheet" type="text/css" />
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <link rel="icon" type="image/png" href="https://erdiphd.github.io" />
+  <link rel="icon" href="web/robotic_arm.png" type="image/x-icon">
   <title>COHER</title>
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -217,30 +217,6 @@
 
     gtag("config", "UA-89486716-2");
   </script>
-  <!-- 
-<script>
-var player, seconds = 0;
-function onYouTubeIframeAPIReady() {
-    console.log("player");
-    player = new YT.Player('yt-embed', {
-        events: {
-          'onReady': onPlayerReady
-        }
-      });
-}
-
-function onPlayerReady(event) {
-    event.target.playVideo();
-}
-
-
-function seek(sec){
-    if(player){
-        seconds += sec;
-        player.seekTo(seconds, true);
-    }
-}</script>
- -->
 </head>
 
 
@@ -313,7 +289,7 @@ function seek(sec){
         </td>
         <td align="center" width="200px">
           <center>
-            <span style="font-size: 22px"><a href="https://github.com/erdisayar/">[GitHub Code]</a></span>
+            <span style="font-size: 22px"><a href="https://github.com/erdiphd/COHER">[GitHub Code]</a></span>
           </center>
         </td>
       </tr>
@@ -338,50 +314,71 @@ function seek(sec){
     Sections
     <ul style="margin-top: 0px">
       <li> <b> Abstract </b> </li>
-      <li> <b>Methodology </b></li>
+      <li> <b>Proposed method </b></li>
       <li><b> Experiment </b> </li>
     </ul>
     <center>
       <h3>Abstract</h3>
     </center>
-    Multi-goal reinforcement learning (RL) problems with sparse rewards are challenging task. Hindsight experience
-    replay (HER) learns from failures by replacing the achieved state of failed experiences with desired goal. If
-    desired goals are far away from the initial states, HER cannot explore efficiently.
-
-    To deal with that efficiency problem, curriculum-based RL approaches decompose complex tasks into sequences of
-    gradually more difficult tasks by relying on some heuristics and guide the agent to explore the environment more
-    efficiently. What if an algorithm generates its own curricula in an open-ended way rather than relying on heuristic
-    methods? The term <i>open-ended</i> means to create novel and increasingly complex tasks without bound. In this
-    paper, we propose an extension of HER called co-evolutionary hindsight experience replay (COHER) inspired by Paired
-    Open-Ended Trailblazer (POET). The generated task and agent are coupled to optimize the behavior of the agent within
-    the task-agent pair. After reaching a predefined success rate, the next challenging task is generated and the agent
-    leverages the skills acquired from the prior task to solve the more challenging task. COHER has been evaluated on
-    various sparse reward benchmark tasks and compared with a curriculum RL "Hindsight Goal Generation" (HGG) and
-    vanilla-HER. The results show that COHER consistently outperforms the state-of-the-art methods and can avoid
-    obstacles without giving the algorithm explicit information about their position. Lastly, we deploy policies from
-    the training results to the real Franka robot for Sim2Real. We observe that Franka robot with the final policy of
-    our method can achieve the task by avoiding obstacles, whereas the other policies hit the obstacles.
+    Multi-goal reinforcement learning (RL) problems with sparse rewards are challenging tasks. These can be solved by
+    hindsight experience replay (HER), which learns from failures by replacing the achieved state of failed experiences
+    with the desired goal. However, if the desired goals are far away from the initial states, HER becomes inefficient.
+    To deal with this issue, curriculum-based RL approaches decompose complex tasks into sequences of gradually more
+    difficult tasks, by relying on heuristics that guide the agent to explore the environment more efficiently. One
+    possible alternative is to generate curricula in an open-ended way, i.e., by creating novel and increasingly more
+    complex tasks without bounds. In this paper, we propose an extension of HER called co-adapting hindsight experience
+    replay (COHER), inspired by the recently proposed Paired Open-Ended Trailblazer (POET). The generated tasks and
+    agent are coupled to optimize the behavior of the agent within each task-agent pair. After reaching a predefined
+    success rate, the next task is generated and the agent leverages the skills acquired from the prior task to solve
+    the next (and more challenging) one. We evaluate COHER on various sparse reward robotic tasks that require obstacle
+    avoidance capabilities, and compare COHER with hindsight goal generation (HGG), curriculum-guided hindsight
+    experience replay (CHER), and vanilla HER. The results show that COHER consistently outperforms the other methods
+    and that the obtained policies can avoid obstacles without having explicit information about their position. Lastly,
+    we deploy such policies to a real Franka robot for Sim2Real analysis. We observe that the robot can achieve the task
+    by avoiding obstacles, whereas policies obtained with other methods cannot. The videos and code are publicly
+    available at: https://erdiphd.github.io/COHER/
 
     <center>
-      <h3>Methodology</h3>
+      <h3>Proposed method</h3>
     </center>
-    In this paper, we are working on robot manipulation tasks in an open-ended process within single run. We pair each
-    environment $\mathcal{X}$ (e.g different number of obstacles) with an agent $\mathcal{Y}$ (e.g neural network) and
-    optimize the behaviour of agents within environment-agent pair until it reaches the predefined success rate. After
-    satisfying the success rate, a bit harder new environment $\mathcal{X'}$ (e.g more obstacles than previous one) is
-    generated. Correspondingly, the algorithm continuously creates a new challenging environment originating from parent
-    environment. These new challenges in the environments are en coded by the number, dimension, and position of the
-    obstacles and the algorithm mutates and increase some of the parameters to create new challenging environment.
-    The agent seeks to solve newly generated environments by utilizing its existing skills, which are acquired from
-    previous environments. In this way, the agent transfers and adapts its existing behavior to the new environment.
-    New generated environment are not added to the current population in POET if they are too hard and too easy for the
-    current population. On the contrary, testing an environment in our case whether or not it is
-    too hard or too easy incurs much cost due to complexity of task we have to ensure that agent attains the predefined
-    success rate in the current environment before solving the next one.
 
-    Algorithm 1 describes our method briefly. We start with a very simple environment and train it using HER
-    framework. When performance is greater than or equal to the predefined success rate $\delta$, the next challenging
-    environment is created and agent tries to learn the new environment with its current skills.
+    In the following, we assume that we are working on a robot manipulation task in an environment with obstacles.
+    Therefore, in the description of the proposed method we will refer to this specific task. Nevertheless, the method
+    could be in principle extended to other kinds of tasks, provided that the environments can be characterized by
+    different levels of difficulty.
+
+    nspired by the POET methodology, our proposed method works as follows. We execute a
+    curriculum learning process in which we maintain a population of environments $\mathcal{X}$ (each one characterized
+    by a different number of obstacles, in different positions and with different sizes) and an agent $\mathcal{Y}$
+    (i.e., a neural network). The environments can be generated either by the algorithm itself, or manually (as we
+    actually do in the present study), and added to the environment population in order of increasing difficulty. In the
+    population, the first environment $\mathcal{X}_{0}$ is always the most simple one, i.e., the one without obstacles.
+    In order to decide when to generate the next environment, we pair the first environment $\mathcal{X}_{0}$ from the
+    population $\mathcal{X}$ with the agent $\mathcal{Y}$ and optimize the agent's behavior in that environment until it
+    reaches a predefined success rate. After satisfying the success rate, a the new environment $\mathcal{X}_{1}$,
+    slightly harder than the previous one $\mathcal{X}_{0}$is generated (e.g., by adding obstacles and/or changing their
+    positions or size). In principle, this process could be continued in an open-ended manner, i.e., without specific
+    bounds. And as a result, we could continuously create ever more challenging environments, each one originating from
+    the previous one, and the training could continue indefinitely. However, for practical experimental reasons we set
+    an upper bound ($E$) to limit the maximum number of environments.
+
+    With this approach, the agent seeks to solve the newly generated environments by utilizing its existing skills,
+    which are acquired from the previous environments. In this way, the agent transfers and adapts its existing behavior
+    to the new environment.
+    Note that in the original POET the newly generated environments are not added to the current
+    population if they are either too hard or too easy for the current population of agents. However, testing whether an
+    environment is too hard or too easy in our case incurs an excessive computational cost, due to the complexity of
+    task at hand. Moreover, we must ensure that the agents attain the predefined success rate in the current environment
+    before solving the next one
+
+    Algorithm describes our method in the form of pseudo-code. As shown in the pseudo-code, we start with a very simple
+    environment and train it using the HER framework. When the performance becomes greater than or equal to the
+    predefined success rate $\delta$, the next (more challenging) environment is created and the agent tries to solve
+    the new environment with its current skills. Success is defined as reaching a target position within a distance set
+    by a threshold $\epsilon_{R}$. After each episode, we run a predefined number of test rollouts ($n_{test-rollouts}$)
+    with the current policy and calculate the success rate $\delta$ based on how many rollouts out of
+    $n_{test-rollouts}$ succeeded in the task.
+
 
     <tbody>
       <tr>
@@ -395,46 +392,113 @@ function seek(sec){
       <h3>Experiment</h3>
     </center>
 
-    We conduct experiments on the MuJoCo simulation provided by OpenAI Gym and used as a standard benchmark for
-    Multi-goal RL using the 7-DOF Fetch Robotic Manipulator. Two standard manipulation
-    tasks such as push and pickandplace are chosen.
-    The state is a vector consisting of the position, orientation, linear velocity, and angular velocity of all robot
-    joints as well as the position of the cube and target object (except the obstacles). It is assumed that the task is
-    accomplished if object reaches the goal within the distance set by a threshold (Eq.\ref{eq:reward_function}) and
-    receives a non-negative reward $0$.
-    We compare the performance of our framework against vanilla HER and HGG. For all experiments, we used Energy-based
-    replay buffer prioritization. When current environment $\mathcal{X}$ performance reaches
-    predefined success rate $\delta$, a bit harder next environment $\mathcal{X'}$ is generated and agent continue to
-    accomplish the new one with its learned model.
+    We conduct experiments on the MuJoCo simulation environments provided by OpenAI Gym and used as standard benchmark
+    for multi-goal RL. Two standard manipulation tasks, both based on a 7-DOF fetch robotic manipulator, are chosen,
+    namely pick-and-place and fetch-push. Because the environments may be
+    generated in an open-ended way but training is computationally expensive, we limit the maximum number of
+    environments ($E$) to $4$ for both tasks. That allows us to train on both tasks multiple times to prove our concept
+    and provide statistics.
+
+    \textbf{PickAndPlace (FrankaPickAndPlace-v1)}:
+    The pick-and-place task with $4$ different environments is shown in Fig.1. The
+    objective is to grasp the cube and bring it to the target position. The cube is shown as a black box, and its
+    initial position is sampled uniformly within the yellow area. The target is the red dot, which is sampled uniformly
+    within the blue region. The obstacles are colored in magenta. The task's difficulty is gradually increased by adding
+    fixed blocks to the different locations on the table, and four different environments are generated in total. In the
+    first environment, shown in Fig. 1, the robot learns how to pick up the cube and place it on
+    the target position. In the second environment, shown in Fig. 1, an obstacle with 0.2m width,
+    0.02m depth, and 0.5m height is placed on the other side of the robot on the table. In the third environment, shown
+    in Fig. 1, another obstacle with 0.3m width, 0.02m depth, and 0.3m height is placed. In the
+    last environment, shown in Fig. 1, an obstacle with 0.2m width, 0.02m depth, and 0.9m height
+    is placed in front of the target sampled area.
+
+    \textbf{FetchPush (FetchPush-v1)}:
+    A fetch-push task with $4$ different environments is shown in Fig. 2.
+    A cube (the black box) and a target (the red dot) are sampled uniformly within the yellow and blue areas,
+    respectively. The objective is to push the cube into the target position with a clamped gripper. The task's
+    difficulty is gradually increased by adding fixed obstacles (colored in magenta) at different locations on the
+    table, and also in this case four different environments are generated in total. In the first environment, shown in
+    Fig. 2, the robot learns how to push the cube to the target point. In the second environment, shown
+    in Fig. 2, the robot needs to adapt its learned policy from the previous environment to avoid the
+    obstacle. In the third environment, shown in Fig. 2, there is only a 10cm gap within the two
+    obstacles, and the robot should push the cube through this gap. Another obstacle is placed in the middle of the
+    table in the fourth environment shown in Fig. 2, and the robot must avoid it in order to reach the
+    target position.
+
+    In both tasks, the state is a vector consisting of the position, orientation, linear velocity, and angular velocity
+    of the robot's end-effector, as well as the position of the cube and target. Note that the information about the
+    obstacles is not included in the state vector. It is assumed that the task is accomplished if cube reaches the goal
+    within a given distance threshold , in which case it receives a non-negative
+    reward $0$.
+
+    We compare the performance of our framework (COHER) against vanilla HER, HGG and CHER. During training with COHER,
+    environments co-adapt with the agent. When the current environment $\mathcal{X}_n$ performance reaches the
+    predefined success rate $\delta$, the next environment $\mathcal{X}_{n+1}$ is selected and the agent tries to solve
+    the new environment with its learned model. On the other hand, HER, HGG and CHER are trained directly on the last
+    (i.e., the most difficult) environment in the population considered in COHER. Our goal is to demonstrate how the
+    co-adapting training method accelerates learning.
 
 
-    PickAndPlace(FrankaPickAndPlace-v1):
-    A pick-and-place task with different environments is shown in the Fig.\ref{fig:pickandplace_env_evolution}. The
-    objective is to grasp the object and bring it to the target position. The object is shown as a black box, and its
-    initial position is sampled uniformly from the yellow area. The target is the red dot, which is sampled uniformly
-    from the blue region, and the obstacles are colored in magenta. The task’s difficulty is gradually increased by
-    adding fixed blocks to the different locations on the table, and four different environments are generated in total.
-    In the first task shown in the Fig.\ref{fig:pickandplace_1}, the robot learns how to pick up the object and place it
-    on the red dot. In the second shown in Fig.\ref{fig:pickandplace_2}, a 0.2m-width, 0.02m-depth, and 0.5m-height
-    obstacle is placed on the other side of the robot on the table. In the third shown in Fig.\ref{fig:pickandplace_3},
-    another obstacle with 0.3m width, 0.02m depth, and 0.3m height is placed. In the last shown in
-    Fig.\ref{fig:pickandplace_4}, an obstacle with 0.2m width, 0.02m depth, and 0.9m height is placed in front of the
-    target sampled area.
+    PickAndPlace and FetchPush are run with 20 and 40 different seeds (The number of runs is different for the
+    two tasks due to limitations on the computational resources.), respectively, on a single machine with one CPU core.
+    The success rate $\delta$ is chosen as $0.9$ and $0.7$. As the outcomes of each episode can be influenced by
+    multiple random factors, the agent completes the task by using a different number of episodes at each run.
+    Therefore, we illustrate the worst-case training results of COHER and HER and the best-case training of HGG and CHER
+    among the different training results. These training results are illustrated in Fig.
+    3 for the PickAndPlace task and in Fig.
+    4 for the FetchPush task.
+    It can be seen that COHER requires 54400 and 34550 episodes to complete the task, respectively for PickAndPlace
+    and FetchPush.
+
+    Concerning PickAndPlace, the first environment takes 24850 episodes, while the second and third environments are
+    generated at 33800 and 46700 episodes, respectively. In other words, 8950 and 12900 episodes are required to
+    reach the given success rate for them.
+
+    As for FetchPush, solving the first environment takes 8950 episodes, while the second and third environments are
+    generated at 12150 and 16550 episodes, respectively. In other words, 3200 and 4400 episodes are required to
+    reach the given success rate for them.
+
+    Compared to COHER, HER requires 223550 and 68200 episodes to reach the same success rate respectively for
+    PickAndPlace and FetchPush. On the other hand, HGG and CHER get stuck most of the time in the presence of obstacles,
+    because as discussed earlier their heuristic method for generating curriculum is based on Euclidean distance. For
+    PickAndPlace in particular, HGG's success rate is always 0.
+
+    The environment transition points are depicted as orange, brown, and purple dots in Fig.
+    3 and Fig. 4 respectively for the
+    two tasks. It can be seen that, with COHER, the performance drops as soon as the next challenging environment is
+    generated, but the RL algorithm adapts itself to the new environment until it reaches the success rate.
+
+    The total number of episodes required to complete the two tasks in different runs is shown as a box plot in Fig.
+    3 and Fig. 4.
+    The mean and median values are shown as a red dashed line and a solid green line, respectively. The corresponding
+    numerical values are reported in Table .
 
 
+    Fig. 3 and Fig. 4 show the number of
+    episodes required for each environment in order to reach the predefined success rate. On average, the environments
+    require 6411.29, 2575.81, 7948.39, and 5216.13 episodes for PickAndPlace and 5810.25, 2332.05, 3453.85, and 9741.03
+    episodes for FetchPush . Moreover, the figures shed light on the difficulty level of each environment. Since the
+    robot starts in the first environment without knowing anything about the task, it takes on average a little bit
+    longer than the second environment. In the second environment, the obstacle is located on the other side of the
+    robot arm, and the location of the obstacle does not intersect with the sampled area of the initial position (i.e.,
+    the yellow area) of the cube. As a result, the robot can easily apply the skills it learned in the first
+    environment. After the robot succeeds in the second environment, it learns to avoid the obstacle either by pushing
+    the cube around it or by moving the cube above it, depending on the task. When the third environment is introduced,
+    the robot arm is blocked more often than in the second environment. The reason is that the third environment has a
+    much smaller gap than the second one, and also that the robot has just learned to go through the safe way, reaching
+    the goal on the other side of the obstacle in the second environment, but now another obstacle is located on its
+    safely learned path.
 
-    Pushing(FetchPush-v1):
-    A cube (black box) and target (red dot) are sampled uniformly from the yellow and blue areas, respectively. The
-    objective is to push the cube into the target position with a clamped gripper. The task's difficulty is gradually
-    increased by adding fixed obstacles to the different locations on the table, and four different environments are
-    generated in total, as shown in the Fig.\ref{fig:push_env_evolution}. In the first task Fig.\ref{fig:push_1}, the
-    robot learns how to push the object to the target point. In the second task Fig.\ref{fig:push_2}, the robot needs to
-    adapt its learned policy from the previous task to avoid the obstacle. In the third task Fig.\ref{fig:push_3}, there
-    is only a 10cm gap, and robots should push the object through this gap. Another obstacle is placed in the middle of
-    the table in the fourth task in Fig.\ref{fig:push_4}, which the robot must avoid in order to reach the target
-    position.
+    As for the last environment, the obstacle is located in the middle of the table for FetchPush and on the left side
+    of the table for PickAndPlace. The last environment for FetchPush takes the longest to be solved, because a newly
+    located obstacle intersects with the sampled area of the target. Furthermore, the robot needs to push the cube
+    around it and bring it to the target point.
 
-    <div class="row_mujoco_robotics">
+
+    <img src="web/img/frankapickandplace_env_fig.png" alt="frankapickandplace_result" style="width:100%">
+    <img src="web/img/fetchpush_env_figure.png" alt="fetchpush_result" style="width:100%">
+
+    <!-- <div class="row_mujoco_robotics">
       <div class="column_mujoco_robotics">
         <img src="web/img/fetchpush_env.png" alt="FetchPush_Env0" style="width:100%">
       </div>
@@ -447,10 +511,10 @@ function seek(sec){
       <div class="column_mujoco_robotics">
         <img src="web/img/fetchpush_env3.png" alt="FetchPush_Env3" style="width:100%">
       </div>
-    </div>
+    </div> -->
 
 
-    <div class="row_mujoco_robotics">
+    <!-- <div class="row_mujoco_robotics">
       <div class="column_mujoco_robotics">
         <img src="web/img/fethcpickandplace_env0.png" alt="fethcpickandplace_env0" style="width:100%">
       </div>
@@ -463,7 +527,7 @@ function seek(sec){
       <div class="column_mujoco_robotics">
         <img src="web/img/fethcpickandplace_env3.png" alt="fethcpickandplace_env3" style="width:100%">
       </div>
-    </div>
+    </div> -->
 
     <div class="row_mujoco_robotics">
       <div class="column_mujoco_robotics">
@@ -476,7 +540,10 @@ function seek(sec){
     </div>
   </div>
 
-  <div class="franka_robotic_results_container">
+
+  <img src="web/img/frankapickandplace_result.png" alt="frankapickandplace_result" style="width:100%">
+  <img src="web/img/fetchpush_result.png" alt="fetchpush_result" style="width:100%">
+  <!-- <div class="franka_robotic_results_container">
     <div class="franka_robotic_result">
       <img src="web/img/boxplot_environments_frankapickandplace.svg" alt="fethcpickandplace_env0" style="width:100%">
     </div>
@@ -487,9 +554,9 @@ function seek(sec){
       <img src="web/img/frankapickandplace_complete.svg" alt="fethcpickandplace_env2" style="width:100%">
     </div>
 
-  </div>
+  </div> -->
 
-  <div class="franka_robotic_results_container">
+  <!-- <div class="franka_robotic_results_container">
     <div class="franka_robotic_result">
       <img src="web/img/fetch_push_box_plot_compare_coher_and_her.svg" alt="fethcpickandplace_env0" style="width:100%">
     </div>
@@ -500,62 +567,62 @@ function seek(sec){
       <img src="web/img/fetchpush_complete.svg" alt="fethcpickandplace_env2" style="width:100%">
     </div>
 
-  </div>
+  </div> -->
 
-  
+
   <table class="table_robotic_tasks">
     <thead>
-        <tr>
-            <th>FrankaPickAndPlace</th>
-            <th>COHER</th>
-            <th>HER</th>
-        </tr>
+      <tr>
+        <th>FrankaPickAndPlace</th>
+        <th>COHER</th>
+        <th>HER</th>
+      </tr>
     </thead>
     <tbody>
       <tr class="active-row">
-            <td>mean</td>
-            <td>53850</td>
-            <td>53850</td>
-        </tr>
-        <tr class="active-row">
-            <td>median</td>
-            <td>52600</td>
-            <td>52600</td>
-        </tr>
-        <tr class="active-row">
-          <td>standard deviation</td>
-          <td>294900</td>
-          <td>294900</td>
-      </tr>
-    </tbody>
-</table>
-
-<table class="table_robotic_tasks">
-  <thead>
-      <tr>
-          <th>FetchPush</th>
-          <th>COHER</th>
-          <th>HER</th>
-      </tr>
-  </thead>
-  <tbody>
-    <tr class="active-row">
-          <td>mean</td>
-          <td>53850</td>
-          <td>53850</td>
+        <td>mean</td>
+        <td>53850</td>
+        <td>53850</td>
       </tr>
       <tr class="active-row">
-          <td>median</td>
-          <td>52600</td>
-          <td>52600</td>
+        <td>median</td>
+        <td>52600</td>
+        <td>52600</td>
       </tr>
       <tr class="active-row">
         <td>standard deviation</td>
         <td>294900</td>
         <td>294900</td>
-    </tr>
-  </tbody>
-</table>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="table_robotic_tasks">
+    <thead>
+      <tr>
+        <th>FetchPush</th>
+        <th>COHER</th>
+        <th>HER</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="active-row">
+        <td>mean</td>
+        <td>53850</td>
+        <td>53850</td>
+      </tr>
+      <tr class="active-row">
+        <td>median</td>
+        <td>52600</td>
+        <td>52600</td>
+      </tr>
+      <tr class="active-row">
+        <td>standard deviation</td>
+        <td>294900</td>
+        <td>294900</td>
+      </tr>
+    </tbody>
+  </table>
 
 
   </div>
@@ -563,13 +630,14 @@ function seek(sec){
 
   <h3>How to run benchmarks</h3>
   <div class="highlight1">
-    <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#fd00dc">#!/bin/bash</span> <br> </br><span style="color:#0167ff">docker-compose run --rm -d -e mujoco_env=FrankaPickAndPlace-v1 -e log_tag=log/train1 -e n_epochs=200 cher</span>
+    <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#fd00dc">#!/bin/bash</span><br><span style="color:#423004">Parameters can be changed using params.yaml file in the repo before starting the experiment</span>
+    </br><span style="color:#0167ff">docker-compose run --rm coher</span>
   </code></pre>
   </div>
-
   <br />
 
 
+  <h1>Sim2Real Videos</h1>
 
   <br />
 
@@ -583,6 +651,7 @@ function seek(sec){
           allowfullscreen></iframe>
       </div>
     </div>
+
 
     <div class="sim2real_youtube_videos_column">
       <div class="video-container">
@@ -651,16 +720,15 @@ function seek(sec){
   <center id="sourceCode">
     <h1>Source Code and Environment</h1>
   </center>
-  <div style="width:800px; margin:0 auto; text-align=center">
-    We have released the PyTorch based implementation and environment on the
-    Github page. Try our code!
+  <div style="width:800px; margin:0 auto; text-align:center">
+    We have released our codes on Github page.
   </div>
   <table align="center" width="900px">
     <tbody>
       <tr>
         <!-- <p style="margin-top:4px;"></p> -->
         <td width="300px" align="center">
-          <span style="font-size: 28px"><a href="https://github.com/erdisayar">[GitHub]</a></span>
+          <span style="font-size:28px"><a href="https://github.com/erdiphd/COHER">[GitHub]</a></span>
         </td>
       </tr>
     </tbody>
@@ -668,78 +736,8 @@ function seek(sec){
   <br />
   <hr />
 
-  <h1 style="text-align: center">Paper and Bibtex</h1>
-  <table align="center" width="850px">
-    <tbody>
-      <tr>
-        <td width="250px" align="left">
-          <!-- <p style="margin-top:4px;"></p> -->
-          <a href="https://arxiv.org/pdf/1912.11032.pdf"><img style="height: 150px"
-              src="web/ICRA_PAPER_RICHARD.pdf.jpg" /></a>
-          <span style="font-size: 20pt"><a href="https://arxiv.org/pdf/1912.11032.pdf">[Paper]</a>&nbsp;
-            <span style="font-size: 20pt"><a href="https://arxiv.org/pdf/1912.11032.pdf">[ArXiv]</a>
-            </span></span>
-        </td>
-        <td width="50px" align="center"></td>
-        <td width="550px" align="left">
-          <!-- <p style="margin-top:4px;"></p> -->
-          <p style="text-align: left">
-            <b><span style="font-size: 20pt">Citation</span></b><br /><span style="font-size: 6px">&nbsp;<br /></span>
-            <span style="font-size: 15pt">Richard Li, Allan Jabri, Trevor Darrell, Pulkit Agrawal.
-              <b>Towards Practical Multi-object Manipulation using Relational
-                Reinforcement Learning.<br /></b>
-              In <i>ICRA</i> 2020.</span>
-          </p>
-          <!-- <p style="margin-top:20px;"></p> -->
-          <span style="font-size: 20pt"><a shape="rect" href="javascript:togglebib(&#39;relationalrl19_bib&#39;)"
-              class="togglebib">[Bibtex]</a></span>
-        </td>
-      </tr>
-      <tr>
-        <td width="250px" align="left"></td>
-        <td width="50px" align="center"></td>
-        <td width="550px" align="left">
-          <div class="paper" id="relationalrl19_bib">
-            <pre xml:space="preserve" style="display: none">
-@inproceedings{li19relationalrl,
-  Author = {Li, Richard and
-  Jabri, Allan and Darrell, Trevor and Agrawal, Pulkit},
-  Title = {Towards Practical Multi-object Manipulation using Relational Reinforcement Learning},
-  Booktitle = {arXiv preprint arXiv:XXXX},
-  Year = {2019}
-}</pre>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <br />
-  <hr />
 
-  <!--     <table align=center width=800px>
-      <tr><td width=800px><left> -->
-  <div style="width: 800px; margin: 0 auto; text-align: left">
-    <center>
-      <h1>Acknowledgements</h1>
-    </center>
-    We acknowledge support from US Department of Defense, DARPA's Machine
-    Common Sense Grant and the BAIR and BDD industrial consortia. We thank
-    Amazon Web Services (AWS) for their generous support in the form of cloud
-    credits. We'd like to thank Vitchyr Pong, Kristian Hartikainen, Ashvin
-    Nair and other members of the BAIR lab and the Improbable AI lab for
-    helpful discussions during this project.
-    <a href="https://people.eecs.berkeley.edu/~pathak/">Template credit</a>.
-    <!--       </left></td></tr>
-    </table> -->
-    <br /><br />
-    <script xml:space="preserve" language="JavaScript">
-      hideallbibs();
-    </script>
   </div>
-
-
-
-
 
 </body>
 

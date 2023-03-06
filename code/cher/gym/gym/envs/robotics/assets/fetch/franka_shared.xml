@@ -1,0 +1,166 @@
+<!-- Developed by Erdi Sayar -->
+<!-- It includes unncessary lines and unrelated files -->
+<mujoco>
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.44 0.85 0.56" rgb2="0.46 0.87 0.58" width="32" height="32"></texture>
+        <texture name="texture_block" file="block.png" gridsize="3 4" gridlayout=".U..LFRB.D.."></texture>
+
+        <material name="floor_mat" specular="0" shininess="0.5" reflectance="0" rgba="0.2 0.2 0.2 1"></material>
+        <material name="table_mat" specular="0" shininess="0.5" reflectance="0" rgba="0.93 0.93 0.93 1"></material>
+        <material name="block_mat" specular="0" shininess="0.5" reflectance="0" rgba="0.2 0.2 0.2 1"></material>
+        <material name="puck_mat" specular="0" shininess="0.5" reflectance="0" rgba="0.2 0.2 0.2 1"></material>
+        <material name="robot0:geomMat" shininess="0.03" specular="0.4"></material>
+        <material name="robot0:gripper_finger_mat" shininess="0.03" specular="0.4" reflectance="0"></material>
+        <material name="robot0:gripper_mat" shininess="0.03" specular="0.4" reflectance="0"></material>
+        <material name="robot0:arm_mat" shininess="0.03" specular="0.4" reflectance="0"></material>
+        <material name="robot0:head_mat" shininess="0.03" specular="0.4" reflectance="0"></material>
+        <material name="robot0:torso_mat" shininess="0.03" specular="0.4" reflectance="0"></material>
+        <material name="robot0:base_mat" shininess="0.03" specular="0.4" reflectance="0"></material>
+
+
+        <material name="white" rgba="1 1 1 1"/>
+        <material name="off_white" rgba="0.901961 0.921569 0.929412 1"/>
+        <material name="black" rgba="0.25 0.25 0.25 1"/>
+        <material name="green" rgba="0 1 0 1"/>
+        <material name="light_blue" rgba="0.039216 0.541176 0.780392 1"/>
+
+        <mesh file="base_link_collision.stl" name="robot0:base_link"></mesh>
+        <mesh file="bellows_link_collision.stl" name="robot0:bellows_link"></mesh>
+        <mesh file="elbow_flex_link_collision.stl" name="robot0:elbow_flex_link"></mesh>
+        <mesh file="estop_link.stl" name="robot0:estop_link"></mesh>
+        <mesh file="forearm_roll_link_collision.stl" name="robot0:forearm_roll_link"></mesh>
+        <mesh file="gripper_link.stl" name="robot0:gripper_link"></mesh>
+        <mesh file="head_pan_link_collision.stl" name="robot0:head_pan_link"></mesh>
+        <mesh file="head_tilt_link_collision.stl" name="robot0:head_tilt_link"></mesh>
+        <mesh file="l_wheel_link_collision.stl" name="robot0:l_wheel_link"></mesh>
+        <mesh file="laser_link.stl" name="robot0:laser_link"></mesh>
+        <mesh file="r_wheel_link_collision.stl" name="robot0:r_wheel_link"></mesh>
+        <mesh file="torso_lift_link_collision.stl" name="robot0:torso_lift_link"></mesh>
+        <mesh file="shoulder_pan_link_collision.stl" name="robot0:shoulder_pan_link"></mesh>
+        <mesh file="shoulder_lift_link_collision.stl" name="robot0:shoulder_lift_link"></mesh>
+        <mesh file="upperarm_roll_link_collision.stl" name="robot0:upperarm_roll_link"></mesh>
+        <mesh file="wrist_flex_link_collision.stl" name="robot0:wrist_flex_link"></mesh>
+        <mesh file="wrist_roll_link_collision.stl" name="robot0:wrist_roll_link"></mesh>
+        <mesh file="torso_fixed_link.stl" name="robot0:torso_fixed_link"></mesh>
+
+        <mesh name="robot0_link0" file="link0.stl" />
+        <mesh name="robot0_link1" file="link1.stl" />
+        <mesh name="robot0_link2" file="link2.stl" />
+        <mesh name="robot0_link3" file="link3.stl" />
+        <mesh name="robot0_link4" file="link4.stl" />
+        <mesh name="robot0_link5" file="link5.stl" />
+        <mesh name="robot0_link6" file="link6.stl" />
+        <mesh name="robot0_link7" file="link7.stl" />
+        <mesh name="robot0_link0_vis" file="link0_vis.stl" />
+        <mesh name="robot0_link1_vis" file="link1_vis.stl" />
+        <mesh name="robot0_link2_vis" file="link2_vis.stl" />
+        <mesh name="robot0_link3_vis" file="link3_vis.stl" />
+        <mesh name="robot0_link4_vis" file="link4_vis.stl" />
+        <mesh name="robot0_link5_vis" file="link5_vis.stl" />
+        <mesh name="robot0_link6_vis" file="link6_vis.stl" />
+        <mesh name="robot0_link7_vis" file="link7_vis.stl" />
+        <mesh name="gripper0_hand" file="hand.stl" />
+        <mesh name="gripper0_hand_vis" file="hand_vis.stl" />
+        <mesh name="gripper0_finger" file="finger.stl" />
+        <mesh name="gripper0_finger_vis" file="finger_vis.stl" />
+        <mesh name="gripper0_finger_vis2" file="finger_longer.stl" />
+
+
+        <!-- Visual meshes -->
+        <mesh name="link0_0_vis" file="link0_0.stl"/>
+        <mesh name="link0_1_vis" file="link0_1.stl"/>
+        <mesh name="link0_2_vis" file="link0_2.stl"/>
+        <mesh name="link0_3_vis" file="link0_3.stl"/>
+        <mesh name="link0_4_vis" file="link0_4.stl"/>
+        <mesh name="link0_5_vis" file="link0_5.stl"/>
+        <mesh name="link0_7_vis" file="link0_7.stl"/>
+        <mesh name="link0_8_vis" file="link0_8.stl"/>
+        <mesh name="link0_9_vis" file="link0_9.stl"/>
+        <mesh name="link0_10_vis" file="link0_10.stl"/>
+        <mesh name="link0_11_vis" file="link0_11.stl"/>
+
+        <mesh name="link1_vis" file="link1_0.stl"/>
+        <mesh name="link2_vis" file="link2_0.stl"/>
+
+
+        <mesh name="link3_0_vis" file="link3_0.stl"/>
+        <mesh name="link3_1_vis" file="link3_1.stl"/>
+        <mesh name="link3_2_vis" file="link3_2.stl"/>
+        <mesh name="link3_3_vis" file="link3_3.stl"/>
+        <mesh name="link4_0_vis" file="link4_0.stl"/>
+        <mesh name="link4_1_vis" file="link4_1.stl"/>
+        <mesh name="link4_2_vis" file="link4_2.stl"/>
+        <mesh name="link4_3_vis" file="link4_3.stl"/>
+        <mesh name="link5_0_vis" file="link5_0.stl"/>
+        <mesh name="link5_1_vis" file="link5_1.stl"/>
+        <mesh name="link5_2_vis" file="link5_2.stl"/>
+        <mesh name="link6_0_vis" file="link6_0.stl"/>
+        <mesh name="link6_1_vis" file="link6_1.stl"/>
+        <mesh name="link6_2_vis" file="link6_2.stl"/>
+        <mesh name="link6_3_vis" file="link6_3.stl"/>
+        <mesh name="link6_4_vis" file="link6_4.stl"/>
+        <mesh name="link6_5_vis" file="link6_5.stl"/>
+        <mesh name="link6_6_vis" file="link6_6.stl"/>
+        <mesh name="link6_8_vis" file="link6_8.stl"/>
+        <mesh name="link6_9_vis" file="link6_9.stl"/>
+        <mesh name="link6_10_vis" file="link6_10.stl"/>
+        <mesh name="link6_11_vis" file="link6_11.stl"/>
+        <mesh name="link6_13_vis" file="link6_13.stl"/>
+        <mesh name="link6_14_vis" file="link6_14.stl"/>
+        <mesh name="link6_15_vis" file="link6_15.stl"/>
+        <mesh name="link6_16_vis" file="link6_16.stl"/>
+        <mesh name="link7_0_vis" file="link7_0.stl"/>
+        <mesh name="link7_1_vis" file="link7_1.stl"/>
+        <mesh name="link7_2_vis" file="link7_2.stl"/>
+        <mesh name="link7_3_vis" file="link7_3.stl"/>
+        <mesh name="link7_4_vis" file="link7_4.stl"/>
+        <mesh name="link7_5_vis" file="link7_5.stl"/>
+        <mesh name="link7_6_vis" file="link7_6.stl"/>
+        <mesh name="link7_7_vis" file="link7_7.stl"/>
+
+
+
+
+    </asset>
+
+    <equality>
+        <weld body1="robot0:mocap" body2="robot0:gripper_link" solimp="0.9 0.95 0.001" solref="0.02 1"></weld>
+    </equality>
+
+    <contact>
+        <exclude body1="gripper0_leftfinger" body2="gripper0_rightfinger"></exclude>
+    </contact>
+
+    <default>
+        <default class="robot0:fetch">
+            <geom margin="0.001" material="robot0:geomMat" rgba="1 1 1 1" solimp="0.99 0.99 0.01" solref="0.01 1" type="mesh" user="0"></geom>
+            <joint armature="1" damping="50" frictionloss="0" stiffness="0"></joint>
+
+            <default class="robot0:fetchGripper">
+                <geom condim="4" margin="0.001" type="box" user="0" rgba="0.356 0.361 0.376 1.0"></geom>
+                <joint armature="100" damping="1000" limited="true" solimplimit="0.99 0.999 0.01" solreflimit="0.01 1" type="slide"></joint>
+            </default>
+
+            <default class="visual">
+                <geom contype="0" conaffinity="0" group="0" type="mesh" rgba=".95 .99 .92 1" mass="0"/>
+            </default>
+
+            <default class="collision">
+                <geom contype="1" conaffinity="1" group="3" type="mesh" rgba=".5 .6 .7 1"/>
+            </default>
+
+            <default class="robot0:grey">
+                <geom rgba="0.356 0.361 0.376 1.0"></geom>
+            </default>
+            <default class="robot0:blue">
+                <geom rgba="0.086 0.506 0.767 1.0"></geom>
+            </default>
+        </default>
+    </default>
+    <sensor>
+        <touch name="force_sensor_r" site="force_sensor_r"></touch>
+        <touch name="force_sensor_l" site="force_sensor_l"></touch>
+        <force name="force_sensor_3r" site="force_sensor_r"></force>
+        <force name="force_sensor_3l" site="force_sensor_l"></force>
+    </sensor>
+</mujoco>
