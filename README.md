@@ -1,6 +1,7 @@
 # COHER
 
-This is a implementation of COHER from our paper: "Curriculum learning for robot manipulation tasks with sparse reward through environment shifts" (IEEE Open-Access 2024)
+This is the original implementation of the COHER approach proposed in:
+E. Sayar, G. Iacca, A. Knoll, Curriculum learning for robot manipulation tasks with sparse reward through environment shifts, IEEE Access, 2024
 
 
 To be able to reproduce the results;
